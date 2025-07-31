@@ -1,0 +1,198 @@
+/* Base Styles */
+:root {
+  --metal-primary: #0abdc6;
+  --metal-secondary: #711c91;
+  --metal-dark: #0a0a12;
+  --metal-accent: #ff00aa;
+  --metal-border: #133e7c;
+}
+
+@font-face {
+  font-family: 'Cyber';
+  src: url('https://fonts.cdnfonts.com/css/cyberpunk-is-not-dead') format('woff2');
+}
+
+/* Hero Container */
+.cyber-hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, var(--metal-secondary) 0%, transparent 30%),
+    linear-gradient(to bottom, #000000 0%, var(--metal-dark) 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cyber', 'Orbitron', sans-serif;
+  text-transform: uppercase;
+}
+
+.cyber-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    url('https://www.transparenttextures.com/patterns/carbon-fibre.png'),
+    linear-gradient(135deg, rgba(10,189,198,0.1) 0%, rgba(113,28,145,0.3) 100%);
+  opacity: 0.6;
+}
+
+/* Typography */
+.cyber-title {
+  font-size: clamp(3rem, 10vw, 8rem);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -2px;
+  position: relative;
+  text-shadow: 
+    0 0 10px var(--metal-primary),
+    0 0 20px rgba(10, 189, 198, 0.5),
+    0 0 30px rgba(113, 28, 145, 0.3);
+}
+
+.cyber-glow {
+  color: transparent;
+  background: linear-gradient(90deg, var(--metal-primary), #ff00aa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: text-flicker 3s linear infinite;
+}
+
+.cyber-sub {
+  display: block;
+  font-size: 0.4em;
+  letter-spacing: 5px;
+  margin-top: 10px;
+  color: var(--metal-primary);
+  text-shadow: 0 0 5px var(--metal-primary);
+}
+
+.cyber-desc {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  margin: 2rem 0;
+  color: white;
+  letter-spacing: 3px;
+}
+
+.cyber-slash {
+  color: var(--metal-accent);
+  margin: 0 10px;
+}
+
+/* Buttons */
+.cyber-buttons {
+  display: flex;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.cyber-button {
+  position: relative;
+  padding: 1.2rem 3rem;
+  border: none;
+  outline: none;
+  background: var(--metal-dark);
+  color: white;
+  font-family: 'Cyber', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s;
+  z-index: 1;
+  box-shadow: 
+    0 0 10px rgba(10, 189, 198, 0.5),
+    inset 0 0 10px rgba(10, 189, 198, 0.2);
+}
+
+.cyber-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 
+    0 0 20px var(--metal-primary),
+    0 0 30px rgba(10, 189, 198, 0.5);
+}
+
+.cyber-button-text {
+  position: relative;
+  z-index: 2;
+}
+
+.cyber-button-glitch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    var(--metal-accent) 49%,
+    var(--metal-primary) 51%,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 1;
+}
+
+.cyber-button:hover .cyber-button-glitch {
+  opacity: 0.3;
+  animation: glitch-anim 0.5s infinite;
+}
+
+.cyber-button-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(10,189,198,0.3) 0%,
+    rgba(113,28,145,0.3) 100%
+  );
+  z-index: 0;
+}
+
+.cyber-primary {
+  border: 1px solid var(--metal-primary);
+}
+
+.cyber-secondary {
+  border: 1px solid var(--metal-accent);
+}
+
+/* Animations */
+@keyframes text-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 
+      0 0 10px var(--metal-primary),
+      0 0 20px rgba(10, 189, 198, 0.5),
+      0 0 30px rgba(113, 28, 145, 0.3);
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+@keyframes glitch-anim {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(-3px, -3px); }
+  60% { transform: translate(3px, 3px); }
+  80% { transform: translate(3px, -3px); }
+  100% { transform: translate(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cyber-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .cyber-button {
+    padding: 1rem 2rem;
+  }
+}

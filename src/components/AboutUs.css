@@ -1,0 +1,143 @@
+/* Base Styles */
+:root {
+  --aqua: #7fffd4;
+  --deep-aqua: #00c9a7;
+  --neon-pink: #ff6bff;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(127, 255, 212, 0.3);
+}
+
+/* Container */
+.about-container {
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #0a2e38 0%, #05161d 100%);
+}
+
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* Typography */
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  color: var(--aqua);
+  text-shadow: 0 0 10px rgba(127, 255, 212, 0.5);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.title-number {
+  font-size: 3rem;
+  color: var(--neon-pink);
+  text-shadow: 0 0 15px rgba(255, 107, 255, 0.7);
+}
+
+.section-subtitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  color: var(--aqua);
+  margin: 2rem 0 1rem;
+  text-shadow: 0 0 8px rgba(127, 255, 212, 0.5);
+}
+
+/* Glass Cards */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.about-card p {
+  color: #e0f8f5;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* Image Flip Effect */
+.image-flip-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  perspective: 1000px;
+}
+
+.image-flip-front,
+.image-flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 201, 167, 0.3);
+}
+
+.image-flip-front {
+  transform: rotateY(0deg);
+}
+
+.image-flip-back {
+  transform: rotateY(180deg);
+}
+
+.image-flip-container.flipped .image-flip-front {
+  transform: rotateY(-180deg);
+}
+
+.image-flip-container.flipped .image-flip-back {
+  transform: rotateY(0deg);
+}
+
+.image-flip-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+/* Hover Effects */
+.image-flip-container:hover {
+  transform: translateY(-5px);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .image-flip-container {
+    height: 350px;
+    order: -1;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .title-number {
+    font-size: 2.5rem;
+  }
+  
+  .glass-card {
+    padding: 1.5rem;
+  }
+}

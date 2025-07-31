@@ -1,0 +1,167 @@
+:root {
+  --neon-blue: #00f7ff;
+  --neon-pink: #ff6bff;
+  --dark-bg: #0a0a20;
+  --card-bg: rgba(26, 9, 51, 0.85);
+  --glass-border: rgba(127, 255, 212, 0.25);
+  --text-light: #e0f8f5;
+  --text-muted: #a0d8d5;
+}
+
+/* Base Layout */
+
+.page-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--neon-blue);
+  font-size: 2.5rem;
+}
+
+.event-container{
+  padding: 0px;
+  margin-right: 0px;
+}
+
+/* 3x2 Grid Layout */
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-auto-rows: 5fr;
+  gap: 50px;
+  margin: 0%;
+  height: 100%;
+  margin-right: 0%;
+}
+
+/* Event Cards */
+.event-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-name {
+  color: var(--neon-blue);
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.event-title {
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.event-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-muted);
+}
+
+.detail-icon {
+  color: var(--neon-blue);
+  width: 16px;
+}
+
+.event-rules {
+  margin-top: 1rem;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+}
+
+.event-rules li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Rules Section */
+.rules-section {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: var(--neon-pink);
+  margin-bottom: 1rem;
+}
+
+.rules-list {
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+}
+
+.rules-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.register-button, .download-button {
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.register-button {
+  background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
+  color: black;
+  border: none;
+}
+
+.download-button {
+  background: transparent;
+  color: var(--neon-blue);
+  border: 2px solid var(--neon-blue);
+}
+
+.register-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 247, 255, 0.4);
+}
+
+.download-button:hover {
+  background: rgba(0, 247, 255, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .event-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .event-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .register-button, .download-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
