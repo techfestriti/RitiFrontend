@@ -14,7 +14,7 @@ const Admin = () => {
 
   const fetchRegistrations = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/registrations');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/registrations`);
       setRegistrations(res.data);
       setFiltered(res.data);
       setLoading(false);
@@ -39,7 +39,7 @@ const Admin = () => {
 
   const markPresent = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/registrations/${id}/present`);
+     await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/registrations/${id}/present`);
       const updated = filtered.map(r =>
         r._id === id ? { ...r, present: true } : r
       );
