@@ -75,7 +75,7 @@ const Footer = () => {
 
       <Box className="footer-bottom">
         <Typography variant="caption" className="copyright">
-          © 2025 Riti 10.0 | Department of Computer Science | Vimala College (Autonomous)
+          © 2026 Riti 11.0 | Department of Computer Science | Vimala College (Autonomous)
         </Typography>
         <div className="footer-iris-bar"></div>
       </Box>
