@@ -8,13 +8,25 @@ const Admin = () => {
   const [selectedEvent, setSelectedEvent] = useState('');
   const [error, setError] = useState('');
 
+  // Base API URL configuration
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  // Axios config containing the required auth header from your backend middleware
+  const axiosConfig = {
+    headers: {
+      'admin-auth': 'true',
+      'Content-Type': 'application/json'
+    }
+  };
+
   useEffect(() => {
     fetchRegistrations();
   }, []);
 
   const fetchRegistrations = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/registrations`);
+      // 1. FIXED PATH: Changed from /api/registrations to /api/admin/registrations
+      const res = await axios.get(`${API_URL}/api/admin/registrations`, axiosConfig);
       setRegistrations(res.data);
       setFiltered(res.data);
       setLoading(false);
@@ -39,11 +51,20 @@ const Admin = () => {
 
   const markPresent = async (id) => {
     try {
-     await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/registrations/${id}/present`);
-      const updated = filtered.map(r =>
-        r._id === id ? { ...r, present: true } : r
+      // 2. FIXED PATH & BODY: Changed path to /api/admin/attendance/:id and 
+      // passed { isPresent: true } instead of looking for /present route.
+      // Also fixed schema reference key from 'present' to 'isPresent'.
+      await axios.put(`${API_URL}/api/admin/attendance/${id}`, { isPresent: true }, axiosConfig);
+      
+      const updatedFiltered = filtered.map(r =>
+        r._id === id ? { ...r, isPresent: true } : r
       );
-      setFiltered(updated);
+      const updatedRegistrations = registrations.map(r =>
+        r._id === id ? { ...r, isPresent: true } : r
+      );
+      
+      setFiltered(updatedFiltered);
+      setRegistrations(updatedRegistrations);
     } catch (err) {
       console.error('Error marking present:', err);
       alert('Error marking participant as present.');
@@ -51,7 +72,7 @@ const Admin = () => {
   };
 
   const eventOptions = Array.from(
-    new Set(registrations.flatMap(r => r.selectedEvents))
+    new Set(registrations.flatMap(r => r.selectedEvents || []))
   );
 
   return (
@@ -122,16 +143,17 @@ const Admin = () => {
                     <td style={cellStyle}>{participant.sem}</td>
                     <td style={cellStyle}>
                       <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                        {participant.selectedEvents.map((event, i) => (
+                        {participant.selectedEvents?.map((event, i) => (
                           <li key={i}>{event}</li>
                         ))}
                       </ul>
                     </td>
                     <td style={cellStyle}>
-                      {participant.present ? '✅' : '❌'}
+                      {/* 3. FIXED ATTRIBUTE: Backend schema uses 'isPresent', not 'present' */}
+                      {participant.isPresent ? '✅' : '❌'}
                     </td>
                     <td style={cellStyle}>
-                      {!participant.present && (
+                      {!participant.isPresent && (
                         <button
                           onClick={() => markPresent(participant._id)}
                           style={{
