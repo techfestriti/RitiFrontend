@@ -180,9 +180,14 @@ const Admin = () => {
   );
 };
 
+// --- AT THE BOTTOM OF YOUR ADMIN.JSX FILE ---
+
+// Update this object
 const cellStyle = {
   padding: '10px',
-  borderBottom: '1px solid #ccc'
+  borderBottom: '1px solid #ccc',
+  color: '#333',          // <--- Add this line: Sets text to dark gray
+  verticalAlign: 'top'   // <--- Add this line: Keeps 'Events' list aligned to top
 };
 
 export default Admin;
