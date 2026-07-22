@@ -1,222 +1,123 @@
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faUsers,
-  faUser,
-  faCalendarAlt,
-  faMapMarkerAlt,
-  faMoneyBillWave,
-  faTrophy,
-  faPaperPlane,
-  faDownload
-} from '@fortawesome/free-solid-svg-icons';
 import './Events.css';
 
-const Event = () => {
-  const navigate = useNavigate();
+const Events = () => {
+  // Sample event images
+  const brochureImages = [
+    { id: 1, src: '2.png', alt: 'Event Brochure 1' },
+    { id: 2, src: '3.png', alt: 'Event Brochure 2' },
+    { id: 3, src: '4.png', alt: 'Event Brochure 3' },
+    { id: 4, src: '5.png', alt: 'Event Brochure 4' },
+    { id: 5, src: '6.png', alt: 'Event Brochure 5' },
+    { id: 6, src: '7.png', alt: 'Event Brochure 6' },
+  ];
 
- const events = [
-    {
-      id: 1,
-      name: 'CODECASCADE',
-      title: 'The Dual-Stage Coding Challenge',
-      type: 'Group Event (2 Participants)',
-       time: '1:30 PM – 3:00 PM',
-      venue: 'Computer Lab 1',
-      fee: '₹100 per team',
-      prize: '₹3000',
-      rules: [
-        'Round 1 – Riddle Matrix: Solve a riddle to find the programming topic (15 mins)',
-        'Round 2 – The Flow Forge: Create a flowchart on paper based on the topic (20 mins)',
-        'Round 3 – CodeCore Showdown: Second player codes the solution in C based on flowchart (25 mins)',
-        'Elimination after each round',
-        'Strict supervision',
-        'Mobile phones prohibited',
-        'Winners: Team with accurate output across all rounds'
-      ],
-      icon: faUsers
-    },
-    {
-      id: 2,
-      name: 'LOGOFLEX',
-      title: 'Scribbles to Symbols',
-      type: 'Individual Event',
-      time: '10:00 AM – 11:00 AM',
-      venue: 'BOV Lab',
-      fee: '₹50 per participant',
-      prize: '₹2000',
-      rules: [
-        'Design a logo using Adobe Photoshop or Illustrator',
-        'Can use text, images, or graphics',
-        'Judged on Creativity, Relevance, Design Quality',
-        'No internet or gadgets allowed',
-        'Systems provided',
-        'Non-compliance leads to disqualification'
-      ],
-      icon: faUser
-    },
-    {
-      id: 3,
-      name: 'C-TASTIC BINGO',
-      title: 'Debug Your Brain – C Bingo + Quiz',
-      type: 'Group Event (2 Participants)',
-      time: '1:30 PM – 3:00 PM',
-      venue: 'Computer Lab 1',
-      fee: '₹100 per team',
-      prize: '₹2500',
-      rules: [
-        'Level 1 – Bingo: C programming terms, mark rows/columns/diagonals to strike letters in "BINGO"',
-        'Level 2 – Historical Timeline:',
-        '   - Match-the-year quiz',
-        '   - Card activity to arrange C programming events chronologically',
-        'Strict supervision',
-        'No electronic devices allowed'
-      ],
-      icon: faUsers
-    },
-    {
-      id: 4,
-      name: 'TECH TRIATHLON',
-      title: 'Think Sharp. Type Fast. Code Blind.',
-      type: 'Individual Event',
-      time: '1:30 PM – 3:00 PM',
-      venue: 'Computer Lab 1',
-      fee: '₹75 per participant',
-      prize: '₹3500',
-      rules: [
-        '3 Knockout Rounds',
-        'Round 1 – Password Cracking: Use ASCII clues (4 mins)',
-        'Round 3 – Blind Coding: Type with monitor off in MS Word (6 mins)',
-        'Judging:',
-        '   - Round 3 performance primarily',
-        '   - Tie-breakers: Cumulative performance in all rounds',
-        'Electronic devices prohibited',
-        'Disqualification for malpractice',
-        '15 min early reporting required'
-      ],
-      icon: faUser
-    },
-    {
-      id: 5,
-      name: "THE ORACLE'S QUEST",
-      title: 'Digital Treasure Hunt',
-      type: 'Group Event (2 Players per team)',
-      time: '11:30 AM – 3:00 PM',
-      venue: 'Computer Lab',
-      fee: '₹150 per team',
-      prize: '₹4000',
-      rules: [
-        'Bring fully charged smartphones with internet access',
-        'Theme: Percy Jackson and the Camp Half-Blood',
-        'Multi-level treasure hunt',
-        'Elimination-based',
-        'Rule violation leads to disqualification'
-      ],
-      icon: faUsers
-    },
-    {
-      id: 6,
-      name: 'IMAGINEERING SAGA',
-      title: 'Prompt Sketch Twist',
-      type: 'Group Event (3 Participants per team)',
-      time: '1:30 PM – 3:00 PM',
-      venue: 'Computer Lab 1',
-      fee: '₹200 per team',
-      prize: '₹5000',
-      rules: [
-        'Round 1 – Unlock the Truth: Create a full version of a given storyline',
-        'Round 2 – Visual Synthesis & Character Blueprint:',
-        '   - Design a background for the story, Create image of the prime suspect',
-        'Round 3 – Narrative Showcase:',
-        '   - Present story + visual to the jury',
-        'Judging Criteria:',
-        '   - Creativity,Presentation,Imagination',
-        'Each participant handles one round',
-        'Systems provided'
-      ],
-      icon: faUsers
-    }
-  ];
-  const generalRules = [
-    'Valid college ID required',
-    'Registration fees non-refundable',
-    'Judges decisions are final',
-    'Strict anti-cheating policy',
-    'Report 15 minutes before event'
-  ];
+  // Function to handle download
+  const handleDownload = (type) => {
+    // Replace these with your actual PDF file paths
+    const pdfFiles = {
+      Brochure: 'RITI BROCHURE.pdf',
+      Notice: 'notice.pdf'
+    };
+
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = pdfFiles[type];
+    link.download = `RITI-TechFest-2025-${type}.pdf`;
+    
+    // Trigger the download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
-    <div className="event-container">
-      <h1 className="page-title">RITI 10.0 EVENTS</h1>
-
-      {/* 3x2 Event Grid */}
-      <div className="event-grid">
-        {events.map(event => (
-          <div key={event.id} className="event-card">
-            <h3 className="event-name">{event.name}</h3>
-            <p className="event-title">{event.title}</p>
-            
-            <div className="event-detail">
-              <FontAwesomeIcon icon={event.icon} className="detail-icon" />
-              <span>{event.type}</span>
-            </div>
-            
-            <div className="event-detail">
-              <FontAwesomeIcon icon={faCalendarAlt} className="detail-icon" />
-              <span>{event.time}</span>
-            </div>
-            
-            <div className="event-detail">
-              <FontAwesomeIcon icon={faMapMarkerAlt} className="detail-icon" />
-              <span>{event.venue}</span>
-            </div>
-            
-            <div className="event-detail">
-              <FontAwesomeIcon icon={faMoneyBillWave} className="detail-icon" />
-              <span>Fee: {event.fee}</span>
-            </div>
-            
-            <div className="event-detail">
-              <FontAwesomeIcon icon={faTrophy} className="detail-icon" />
-              <span>Prize: {event.prize}</span>
-            </div>
-            
-            {/* Event-specific rules */}
-            <ul className="event-rules">
-              {event.rules.map((rule, i) => (
-                <li key={i}>{rule}</li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    <div className="events-container">
+      {/* Main Heading */}
+      <div className="main-heading">
+        <h1>RITI TECH FEST 2025</h1>
+        <p className="subheading">Explore the events</p>
       </div>
 
-      {/* General Rules Section */}
-      {/* <div className="rules-section">
-        <h2 className="section-title">GENERAL RULES</h2>
-        <ul className="rules-list">
-          {generalRules.map((rule, i) => (
-            <li key={i}>{rule}</li>
+      {/* Brochure Gallery */}
+      <div className="brochure-section">
+        <div className="brochure-gallery">
+          {brochureImages.map((image) => (
+            <div key={image.id} className="brochure-item">
+              <img src={image.src} alt={image.alt} className="brochure-image" />
+            </div>
           ))}
-        </ul>
-      </div> */}
+        </div>
+        <div className="download-buttons">
+          <button onClick={() => handleDownload('Brochure')} className="download-btn">
+            Download Brochure
+          </button>
+          <button onClick={() => handleDownload('Notice')} className="download-btn">
+            Download Notice
+          </button>
+        </div>
+      </div>
 
-      {/* Action Buttons */}
-      {/* <div className="action-buttons">
-        <button 
-          className="register-button"
-          onClick={() => navigate('/register')}
-        >
-          <FontAwesomeIcon icon={faPaperPlane} /> REGISTER NOW
-        </button>
-        
-        <button className="download-button">
-          <FontAwesomeIcon icon={faDownload} /> DOWNLOAD BROCHURE
-        </button>
-      </div> */}
+      {/* AI Showcase Section */}
+      <div className="ai-showcase">
+        <h2>UNVEILING THE FUTURE WITH AI</h2>
+        <p className="tagline">Experience The Fantasy!</p>
+        <p className="event-types">TechFest | AI Showcase | Futuristic FunGames</p>
+        <p className="description">
+          Get ready for a tech-powered experience like never before. Dive into breathing virtual worlds, thrilling adventures, and mind blowing simulations-all through the power of VR!
+        </p>
+        <div className="highlight-box">
+          <p className="highlight">SPOT REGISTRATION ONLY</p>
+          <p>Room No: 831</p>
+        </div>
+        <div className="coordinators">
+          <div className="coordinator">
+            <h4>FACULTY COORDINATOR</h4>
+            <p>Ms Smitha C - 9633610523</p>
+          </div>
+          <div className="coordinator">
+            <h4>STUDENT COORDINATOR</h4>
+            <p>Kalyani K - 9207615096</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Fun Games Section */}
+      <div className="fun-games">
+        <h2>FUN GAMES</h2>
+        <p className="subheading">FUNFINITY</p>
+        <div className="games-list">
+          <ul>
+            <li>PROMPT SKETCH TWIST</li>
+            <li>CHESS PUZZLES</li>
+            <li>KEYBOARD KEY MATCH</li>
+            <li>IMAGE PUZZLES</li>
+            <li>CARD TOWER</li>
+            <li>CUP TOWER WITH STABLE</li>
+            <li>MEMORY QUEST</li>
+            <li>GUESS THE SONG</li>
+            <li>KEYBOARD BUILD</li>
+            <li>RUBIX SOLVING</li>
+            <li>APP ICON IDENTIFYING</li>
+          </ul>
+        </div>
+        <div className="game-details">
+          <p>10.00 AM - 3.30 PM Room No: 826</p>
+          <div className="coordinators">
+            <div className="coordinator">
+              <h4>FACULTY COORDINATOR</h4>
+              <p>Ms Smitha C - 9633610523</p>
+            </div>
+            <div className="coordinator">
+              <h4>STUDENT COORDINATOR</h4>
+              <p>Kalyani K - 9207615096</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Event;
+export default Events;
