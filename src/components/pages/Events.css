@@ -1,167 +1,239 @@
-:root {
-  --neon-blue: #00f7ff;
-  --neon-pink: #ff6bff;
-  --dark-bg: #0a0a20;
-  --card-bg: rgba(26, 9, 51, 0.85);
-  --glass-border: rgba(127, 255, 212, 0.25);
-  --text-light: #e0f8f5;
-  --text-muted: #a0d8d5;
-}
 
-/* Base Layout */
-
-.page-title {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--neon-blue);
-  font-size: 2.5rem;
-}
-
-.event-container{
-  padding: 0px;
-  margin-right: 0px;
-}
-
-/* 3x2 Grid Layout */
-.event-grid {
+.brochure-gallery {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-auto-rows: 5fr;
-  gap: 50px;
-  margin: 0%;
-  height: 100%;
-  margin-right: 0%;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 40px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Event Cards */
-.event-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 1.5rem;
-  height: 500px;
+.brochure-item {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.brochure-item:hover {
+  transform: scale(1.02);
+}
+
+.brochure-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
+/* Main Heading */
+.main-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.main-heading h1 {
+  font-size: 2.5rem;
+  color: #f8f8f8;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-top: 30px;
+}
+
+.main-heading .subheading {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+}
+
+.download-buttons {
   display: flex;
-  flex-direction: column;
-}
-
-.event-name {
-  color: var(--neon-blue);
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-}
-
-.event-title {
-  color: var(--text-light);
-  margin-bottom: 1rem;
-}
-
-.event-detail {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-muted);
-}
-
-.detail-icon {
-  color: var(--neon-blue);
-  width: 16px;
-}
-
-.event-rules {
-  margin-top: 1rem;
-  padding-left: 1.25rem;
-  color: var(--text-muted);
-}
-
-.event-rules li {
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-}
-
-/* Rules Section */
-.rules-section {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.section-title {
-  color: var(--neon-pink);
-  margin-bottom: 1rem;
-}
-
-.rules-list {
-  padding-left: 1.25rem;
-  color: var(--text-muted);
-}
-
-.rules-list li {
-  margin-bottom: 0.5rem;
-}
-
-/* Action Buttons */
-.action-buttons {
-  display: flex;
-  gap: 1.5rem;
   justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
-.register-button, .download-button {
-  padding: 0.8rem 2rem;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.register-button {
-  background: linear-gradient(135deg, var(--neon-blue), var(--neon-pink));
-  color: black;
+.download-btn {
+  background-color: #3498db;
+  color: white;
   border: none;
+  padding: 12px 25px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
 }
 
-.download-button {
-  background: transparent;
-  color: var(--neon-blue);
-  border: 2px solid var(--neon-blue);
+.download-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4);
 }
 
-.register-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 247, 255, 0.4);
+/* AI Showcase Section */
+.ai-showcase {
+  background-color: transparent;
+  padding: 40px;
+  border-radius: 10px;
+  margin-bottom: 60px;
+  text-align: center;
 }
 
-.download-button:hover {
-  background: rgba(0, 247, 255, 0.1);
+.ai-showcase h2 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 5px;
+  text-transform: uppercase;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1200px) {
-  .event-grid {
-    grid-template-columns: repeat(2, 1fr);
+.tagline {
+  font-size: 1.5rem;
+  color: #8d7f7e;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.event-types {
+  font-size: 1.2rem;
+  color: #3498db;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto 30px;
+}
+
+.highlight-box {
+  background-color: #0b1824;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  max-width: 400px;
+  margin: 30px auto;
+}
+
+.highlight {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.coordinators {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.coordinator {
+  background-color: rgb(14, 17, 41);
+  padding: 15px 25px;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.coordinator h4 {
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+/* Fun Games Section */
+.fun-games {
+  background-color: #2c3e50;
+  color: white;
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.fun-games h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.fun-games .subheading {
+  font-size: 1.5rem;
+  color: #3498db;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.games-list {
+  max-width: 600px;
+  margin: 0 auto 30px;
+  text-align: left;
+}
+
+.games-list ul {
+  columns: 2;
+  column-gap: 40px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.games-list li {
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+  font-size: 1.1rem;
+}
+
+.games-list li:before {
+  content: "•";
+  color: #3498db;
+  font-size: 1.5rem;
+  position: absolute;
+  left: 0;
+  top: -3px;
+}
+
+.game-details {
+  margin-top: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-heading h1 {
+    font-size: 2rem;
+  }
+
+  .brochure-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .download-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ai-showcase, .fun-games {
+    padding: 30px 20px;
+  }
+
+  .games-list ul {
+    columns: 1;
+  }
+
+  .coordinators {
+    flex-direction: column;
+    gap: 20px;
   }
 }
 
-@media (max-width: 768px) {
-  .event-grid {
+@media (max-width: 480px) {
+  .brochure-gallery {
     grid-template-columns: 1fr;
   }
-  
-  .action-buttons {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .register-button, .download-button {
-    width: 100%;
-    justify-content: center;
+
+  .main-heading h1 {
+    font-size: 1.8rem;
   }
 }
