@@ -1,9 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, Typography, Box, IconButton } from '@mui/material'; // Added IconButton here
 import {
   Facebook, Twitter, Instagram, LinkedIn, GitHub, YouTube
 } from '@mui/icons-material';
 import './Footer.css';
+
+const quickLinks = [
+  { label: 'Home', path: '/' },
+  { label: 'Events', path: '/events' },
+  { label: 'Gallery', path: '/gallery' },
+  { label: 'Contact', path: '/contact' },
+  { label: 'Register', path: '/register' }
+];
 
 const Footer = () => {
   return (
@@ -31,9 +40,9 @@ const Footer = () => {
             Quick Links
           </Typography>
           <ul className="footer-list">
-            {['Home', 'Events', 'Gallery', 'Contact', 'Register'].map((item) => (
-              <li key={item} className="footer-list-item">
-                <span className="link-text">{item}</span>
+            {quickLinks.map(({ label, path }) => (
+              <li key={label} className="footer-list-item">
+                <Link to={path} className="link-text">{label}</Link>
                 <span className="link-hover"></span>
               </li>
             ))}
