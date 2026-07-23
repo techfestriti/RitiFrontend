@@ -41,6 +41,8 @@ const RegistrationForm = () => {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const statusRef = React.useRef(null);
 
   const events = [
     { id: 'codecascade', name: 'CODECASCADE - Dual-stage coding challenge' },
@@ -130,50 +132,63 @@ const RegistrationForm = () => {
     e.preventDefault();
     setSubmitStatus(null);
 
-    if (validateForm()) {
-      try {
-        const formPayload = new FormData();
-        formPayload.append('name', formData.name);
-        formPayload.append('email', formData.email);
-        formPayload.append('contact', formData.contact);
-        formPayload.append('college', formData.college);
-        formPayload.append('course', formData.course);
-        formPayload.append('sem', formData.sem);
-        if (formData.idPhoto) {
-          formPayload.append('idPhoto', formData.idPhoto);
-        }
+    if (!validateForm()) {
+      setSubmitStatus({
+        success: false,
+        message: 'Please fix the highlighted fields above before submitting.'
+      });
+      statusRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
 
-        formData.selectedEvents.forEach(eventId => {
-          const eventName = events.find(event => event.id === eventId).name;
-          formPayload.append('selectedEvents[]', eventName);
-        });
-
-        const response = await fetch(`${API_URL}/api/register`, {
-          method: 'POST',
-          body: formPayload
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setSubmitStatus({ success: true, message: data.message });
-          setFormData({
-            name: '',
-            email: '',
-            contact: '',
-            college: '',
-            course: '',
-            sem: '',
-            selectedEvents: [],
-            idPhoto: null
-          });
-        } else {
-          setSubmitStatus({ success: false, message: data.error || 'Registration failed' });
-        }
-      } catch (error) {
-        console.error(error);
-        setSubmitStatus({ success: false, message: 'Network error. Please try again.' });
+    setIsSubmitting(true);
+    try {
+      const formPayload = new FormData();
+      formPayload.append('name', formData.name);
+      formPayload.append('email', formData.email);
+      formPayload.append('contact', formData.contact);
+      formPayload.append('college', formData.college);
+      formPayload.append('course', formData.course);
+      formPayload.append('sem', formData.sem);
+      if (formData.idPhoto) {
+        formPayload.append('idPhoto', formData.idPhoto);
       }
+
+      formData.selectedEvents.forEach(eventId => {
+        const eventName = events.find(event => event.id === eventId).name;
+        formPayload.append('selectedEvents[]', eventName);
+      });
+
+      const response = await fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        body: formPayload
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus({ success: true, message: data.message || 'Registration successful!' });
+        setFormData({
+          name: '',
+          email: '',
+          contact: '',
+          college: '',
+          course: '',
+          sem: '',
+          selectedEvents: [],
+          idPhoto: null
+        });
+        setTouched({});
+      } else {
+        setSubmitStatus({ success: false, message: data.error || 'Registration failed' });
+      }
+    } catch (error) {
+      console.error(error);
+      setSubmitStatus({ success: false, message: 'Network error. Please check your connection and try again.' });
+    } finally {
+      setIsSubmitting(false);
+      // Give React a tick to render the message before scrolling to it
+      setTimeout(() => statusRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
     }
   };
 
@@ -213,6 +228,7 @@ const RegistrationForm = () => {
 
             {submitStatus && (
               <Typography
+                ref={statusRef}
                 color={submitStatus.success ? "success.main" : "error"}
                 className="submit-message"
               >
@@ -293,8 +309,9 @@ const RegistrationForm = () => {
                 variant="contained"
                 className="submit-button"
                 endIcon={<FontAwesomeIcon icon={faPaperPlane} />}
+                disabled={isSubmitting}
               >
-                COMPLETE REGISTRATION
+                {isSubmitting ? 'SUBMITTING...' : 'COMPLETE REGISTRATION'}
               </Button>
             </form>
           </CardContent>
