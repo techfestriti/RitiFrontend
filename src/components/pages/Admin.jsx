@@ -159,28 +159,28 @@ const Admin = () => {
               ) : (
                 filtered.map(participant => (
                   <tr key={participant._id}>
-                    <td>{participant.name}</td>
-                    <td>{participant.email}</td>
-                    <td>{participant.contact}</td>
-                    <td>{participant.college}</td>
-                    <td>{participant.course}</td>
-                    <td>{participant.sem}</td>
-                    <td>
+                    <td data-label="Name">{participant.name}</td>
+                    <td data-label="Email">{participant.email}</td>
+                    <td data-label="Contact">{participant.contact}</td>
+                    <td data-label="College">{participant.college}</td>
+                    <td data-label="Course">{participant.course}</td>
+                    <td data-label="Semester">{participant.sem}</td>
+                    <td data-label="Events">
                       <ul className="admin-event-list">
                         {participant.selectedEvents?.map((event, i) => (
                           <li key={i}>{event}</li>
                         ))}
                       </ul>
                     </td>
-                    <td>{participant.isPresent ? '✅' : '❌'}</td>
-                    <td>
+                    <td data-label="Present">{participant.isPresent ? '✅' : '❌'}</td>
+                    <td data-label="Attendance">
                       {!participant.isPresent && (
                         <button className="admin-action-button" onClick={() => markPresent(participant._id)}>
                           Mark Present
                         </button>
                       )}
                     </td>
-                    <td>
+                    <td data-label="Payment">
                       <select
                         className="admin-select admin-select-small"
                         value={participant.paymentMethod || ''}
