@@ -223,7 +223,7 @@ const RegistrationForm = () => {
         <Card className="form-card">
           <CardContent>
             <Typography variant="h3" className="form-title">
-              <span className="title-highlight">REGISTER</span> FOR RITI 10.0
+              <span className="title-highlight">REGISTER</span> FOR RITI 11.0
             </Typography>
 
             {submitStatus && (
