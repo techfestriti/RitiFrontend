@@ -11,14 +11,14 @@ const AboutSection = () => {
       <div className="about-content">
         <div className="about-text">
           <h2 className="section-title">
-            <span className="title-number">10.0</span>
+            <span className="title-number">11.0</span>
             ABOUT RITI
           </h2>
           
           <div className="glass-card about-card">
             <p>
               It is with great pleasure that the Department of Computer Science at Vimala College (Autonomous), Thrissur, 
-              announcing Riti 10.0, the tenth iteration of its annual intercollegiate techno fest, on August 12, 2025.
+              announcing Riti 11.0, the tenth iteration of its annual intercollegiate techno fest, on August 7, 20256.
             </p>
             <p>
               As the digital landscape continues to evolve at an unprecedented pace, we invite you to embark on 
