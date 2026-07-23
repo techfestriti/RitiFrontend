@@ -36,7 +36,7 @@ const Events = () => {
     <div className="events-container">
       {/* Main Heading */}
       <div className="main-heading">
-        <h1>RITI TECH FEST 2025</h1>
+        <h1>RITI TECH FEST 2026</h1>
         <p className="subheading">Explore the events</p>
       </div>
 
