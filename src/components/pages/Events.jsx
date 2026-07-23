@@ -59,29 +59,7 @@ const Events = () => {
         </div>
       </div>
 
-      {/* AI Showcase Section */}
-      <div className="ai-showcase">
-        <h2>UNVEILING THE FUTURE WITH AI</h2>
-        <p className="tagline">Experience The Fantasy!</p>
-        <p className="event-types">TechFest | AI Showcase | Futuristic FunGames</p>
-        <p className="description">
-          Get ready for a tech-powered experience like never before. Dive into breathing virtual worlds, thrilling adventures, and mind blowing simulations-all through the power of VR!
-        </p>
-        <div className="highlight-box">
-          <p className="highlight">SPOT REGISTRATION ONLY</p>
-          <p>Room No: 831</p>
-        </div>
-        <div className="coordinators">
-          <div className="coordinator">
-            <h4>FACULTY COORDINATOR</h4>
-            <p>Ms Smitha C - 9633610523</p>
-          </div>
-          <div className="coordinator">
-            <h4>STUDENT COORDINATOR</h4>
-            <p>Kalyani K - 9207615096</p>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Fun Games Section */}
       <div className="fun-games">
