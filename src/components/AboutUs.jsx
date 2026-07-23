@@ -18,7 +18,7 @@ const AboutSection = () => {
           <div className="glass-card about-card">
             <p>
               It is with great pleasure that the Department of Computer Science at Vimala College (Autonomous), Thrissur, 
-              announcing Riti 11.0, the tenth iteration of its annual intercollegiate techno fest, on August 7, 20256.
+              announcing Riti 11.0, the tenth iteration of its annual intercollegiate techno fest, on August 7, 2026.
             </p>
             <p>
               As the digital landscape continues to evolve at an unprecedented pace, we invite you to embark on 
