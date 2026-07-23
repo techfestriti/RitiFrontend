@@ -24,6 +24,7 @@ import {
   faPaperPlane
 } from '@fortawesome/free-solid-svg-icons';
 import './RegistrationForm.css';
+import { API_URL } from '../../config/api';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -82,7 +83,7 @@ const RegistrationForm = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, idPhoto: file });
-    setErrors({ ...errors, idPhoto: file ? '' : 'ID photo is required' });
+    setErrors({ ...errors, idPhoto: '' });
   };
 
   const handleEventToggle = (eventId) => {
@@ -121,11 +122,6 @@ const RegistrationForm = () => {
       isValid = false;
     }
 
-    if (!formData.idPhoto) {
-      newErrors.idPhoto = 'ID photo is required';
-      isValid = false;
-    }
-
     setErrors(newErrors);
     return isValid;
   };
@@ -143,14 +139,16 @@ const RegistrationForm = () => {
         formPayload.append('college', formData.college);
         formPayload.append('course', formData.course);
         formPayload.append('sem', formData.sem);
-        formPayload.append('idPhoto', formData.idPhoto);
+        if (formData.idPhoto) {
+          formPayload.append('idPhoto', formData.idPhoto);
+        }
 
         formData.selectedEvents.forEach(eventId => {
           const eventName = events.find(event => event.id === eventId).name;
           formPayload.append('selectedEvents[]', eventName);
         });
 
-        const response = await fetch('https://ritibackend-1.onrender.com/api/register', {
+        const response = await fetch(`${API_URL}/api/register`, {
           method: 'POST',
           body: formPayload
         });
@@ -259,7 +257,7 @@ const RegistrationForm = () => {
                 )}
               </Box>
 
-              {/* ID Upload */}
+              {/* ID Upload (optional) */}
               <Box className="upload-section">
                 <input
                   accept="image/*"
@@ -267,7 +265,6 @@ const RegistrationForm = () => {
                   id="id-upload"
                   type="file"
                   onChange={handleFileChange}
-                  required
                 />
                 <label htmlFor="id-upload">
                   <Button
@@ -276,7 +273,7 @@ const RegistrationForm = () => {
                     className="upload-button"
                     startIcon={<FontAwesomeIcon icon={faIdCard} />}
                   >
-                    UPLOAD COLLEGE ID
+                    UPLOAD COLLEGE ID (OPTIONAL)
                   </Button>
                 </label>
                 {formData.idPhoto && (
