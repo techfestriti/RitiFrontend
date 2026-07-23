@@ -58,7 +58,7 @@ const Footer = () => {
             'Department of Computer Science',
             'Vimala College (Autonomous)',
             'Thrissur, Kerala - 680009',
-            'riti@vimalacollege.edu.in',
+            'techfestriti@gmail.com',
             '+91-487-2365432'
           ].map((item) => (
             <Typography key={item} variant="body2" className="contact-item">
