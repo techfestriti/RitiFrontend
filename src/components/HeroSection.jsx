@@ -10,7 +10,7 @@ const HeroSection = () => {
       <div className="cyber-content">
         <h1 className="cyber-title">
           <span className="cyber-glow">RITI</span> 
-          <span className="cyber-sub">TECH FEST 10.0</span>
+          <span className="cyber-sub">TECH FEST 11.0</span>
         </h1>
         
         <p className="cyber-desc">
