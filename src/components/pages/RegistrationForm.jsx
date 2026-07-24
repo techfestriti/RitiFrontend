@@ -45,12 +45,13 @@ const RegistrationForm = () => {
   const statusRef = React.useRef(null);
 
   const events = [
-    { id: 'codecascade', name: 'CODECASCADE - Dual-stage coding challenge' },
-    { id: 'logo', name: "LOGO FLEX - Scribbles to symbols " },
-    { id: 'bingo', name: 'C-TASTIC BINGO - Debug your brain, C bingo and Quiz' },
-    { id: 'triathlon', name: 'TECH TRIATHLON - Think sharp. Type fast. Code blind' },
-    { id: 'oracle', name: "THE ORACLE'S QUEST - Digital scavenger hunt" },
-    { id: 'imagineering', name: 'IMAGINEERING SAGA - Prompt sketch quest' }
+    { id: 'promptarena', name: 'PROMPT ARENA - Prompt Engineering' },
+    { id: 'visioncraft', name: 'VISION CRAFT - Prompt to Website' },
+    { id: 'cyphra', name: 'CYPHRA - Debugging' },
+    { id: 'vestigealibi', name: 'VESTIGE ALIBI - Crime Investigation' },
+    { id: 'synthsteel', name: 'SYNTH & STEEL - Idea Presentation' },
+    { id: 'obsidiantrail', name: 'THE OBSIDIAN TRAIL - Treasure Hunt' },
+    { id: 'memora', name: 'MEMORA - Meme Creation' }
   ];
 
   const handleChange = (e) => {
