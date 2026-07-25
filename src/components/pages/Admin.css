@@ -150,6 +150,14 @@
   padding-left: 18px;
 }
 
+.admin-team-list {
+  margin: 2px 0 6px;
+  padding-left: 16px;
+  font-size: 0.8rem;
+  color: #a8d8d8;
+  list-style: circle;
+}
+
 .admin-empty {
   text-align: center;
   padding: 24px;
