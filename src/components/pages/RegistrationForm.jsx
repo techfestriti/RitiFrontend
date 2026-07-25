@@ -47,15 +47,15 @@ const RegistrationForm = () => {
 
   const events = [
     { id: 'promptarena', name: 'PROMPT ARENA - Prompt Engineering', type: 'individual' },
-    { id: 'visioncraft', name: 'VISION CRAFT - Prompt to Website', type: 'group', minTeammates: 2, maxTeammates: 2},
+    { id: 'visioncraft', name: 'VISION CRAFT - Prompt to Website', type: 'group', minTeammates: 1, maxTeammates: 1 },
     { id: 'cyphra', name: 'CYPHRA - Debugging', type: 'individual' },
-    { id: 'vestigealibi', name: 'VESTIGE ALIBI - Crime Investigation', type: 'group', minTeammates: 2, maxTeammates: 2 },
-    { id: 'synthsteel', name: 'SYNTH & STEEL - Idea Presentation', type: 'group', minTeammates: 1, maxTeammates: 3 },
-    { id: 'obsidiantrail', name: 'THE OBSIDIAN TRAIL - Treasure Hunt', type: 'group', minTeammates: 3, maxTeammates: 3 },
+    { id: 'vestigealibi', name: 'VESTIGE ALIBI - Crime Investigation', type: 'group', minTeammates: 1, maxTeammates: 1 },
+    { id: 'synthsteel', name: 'SYNTH & STEEL - Idea Presentation', type: 'group', minTeammates: 1, maxTeammates: 2 },
+    { id: 'obsidiantrail', name: 'THE OBSIDIAN TRAIL - Treasure Hunt', type: 'group', minTeammates: 2, maxTeammates: 2 },
     { id: 'memora', name: 'MEMORA - Meme Creation', type: 'individual' }
   ];
 
-  const emptyMember = () => ({ name: '', contact: '' });
+  const emptyMember = () => ({ name: '', contact: '', email: '' });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -180,9 +180,12 @@ const RegistrationForm = () => {
         return;
       }
 
-      const hasIncompleteMember = members.some(m => !m.name.trim() || !/^[6-9]\d{9}$/.test(m.contact.trim()));
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const hasIncompleteMember = members.some(
+        m => !m.name.trim() || !/^[6-9]\d{9}$/.test(m.contact.trim()) || !emailRegex.test(m.email.trim())
+      );
       if (hasIncompleteMember) {
-        newErrors[`team_${eventId}`] = 'Enter a name and valid 10-digit contact number for every teammate';
+        newErrors[`team_${eventId}`] = 'Enter a name, valid email, and valid 10-digit contact number for every teammate';
         isValid = false;
       }
     });
@@ -325,6 +328,13 @@ const RegistrationForm = () => {
                 label={`Teammate ${index + 1} Name`}
                 value={member.name}
                 onChange={(e) => handleTeammateChange(event.id, index, 'name', e.target.value)}
+                className="team-member-input"
+              />
+              <TextField
+                size="small"
+                label="Email"
+                value={member.email}
+                onChange={(e) => handleTeammateChange(event.id, index, 'email', e.target.value)}
                 className="team-member-input"
               />
               <TextField
