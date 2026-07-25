@@ -50,7 +50,7 @@ const RegistrationForm = () => {
     { id: 'visioncraft', name: 'VISION CRAFT - Prompt to Website', type: 'group', minTeammates: 1, maxTeammates: 1 },
     { id: 'cyphra', name: 'CYPHRA - Debugging', type: 'individual' },
     { id: 'vestigealibi', name: 'VESTIGE ALIBI - Crime Investigation', type: 'group', minTeammates: 1, maxTeammates: 1 },
-    { id: 'synthsteel', name: 'SYNTH & STEEL - Idea Presentation', type: 'group', minTeammates: 1, maxTeammates: 2 },
+    { id: 'synthsteel', name: 'SYNTH & STEEL - Idea Presentation', type: 'group', minTeammates: 0, maxTeammates: 2 },
     { id: 'obsidiantrail', name: 'THE OBSIDIAN TRAIL - Treasure Hunt', type: 'group', minTeammates: 2, maxTeammates: 2 },
     { id: 'memora', name: 'MEMORA - Meme Creation', type: 'individual' }
   ];
@@ -80,7 +80,7 @@ const RegistrationForm = () => {
     } else if (name === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
       error = 'Invalid email address';
     } else if (name === 'contact' && !/^[6-9]\d{9}$/.test(value)) {
-      error = 'Invalid phone number';
+      error = 'Enter a valid 10-digit number starting with 6, 7, 8, or 9';
     }
 
     setErrors((prev) => ({ ...prev, [name]: error }));
@@ -156,7 +156,7 @@ const RegistrationForm = () => {
     }
 
     if (formData.contact && !/^[6-9]\d{9}$/.test(formData.contact)) {
-      newErrors.contact = 'Invalid phone number';
+      newErrors.contact = 'Enter a valid 10-digit number starting with 6, 7, 8, or 9';
       isValid = false;
     }
 
@@ -185,7 +185,7 @@ const RegistrationForm = () => {
         m => !m.name.trim() || !/^[6-9]\d{9}$/.test(m.contact.trim()) || !emailRegex.test(m.email.trim())
       );
       if (hasIncompleteMember) {
-        newErrors[`team_${eventId}`] = 'Enter a name, valid email, and valid 10-digit contact number for every teammate';
+        newErrors[`team_${eventId}`] = 'Enter a name, valid email, and valid 10-digit contact number (starting with 6, 7, 8, or 9) for every teammate';
         isValid = false;
       }
     });
@@ -271,13 +271,14 @@ const RegistrationForm = () => {
     }
   };
 
-  const createInput = (name, label, icon, type = 'text') => (
+  const createInput = (name, label, icon, type = 'text', placeholder = '') => (
     <Box className="input-field">
       <TextField
         fullWidth
         type={type}
         name={name}
         label={label}
+        placeholder={placeholder}
         value={formData[name]}
         onChange={handleChange}
         onBlur={handleBlur}
@@ -340,6 +341,7 @@ const RegistrationForm = () => {
               <TextField
                 size="small"
                 label="Contact Number"
+                placeholder="e.g. 9876543210"
                 value={member.contact}
                 onChange={(e) => handleTeammateChange(event.id, index, 'contact', e.target.value)}
                 className="team-member-input"
@@ -399,7 +401,7 @@ const RegistrationForm = () => {
             <form onSubmit={handleSubmit} className="registration-form">
               {createInput("name", "FULL NAME", faUser)}
               {createInput("email", "EMAIL", faEnvelope, "email")}
-              {createInput("contact", "WHATSAPP NUMBER", faPhone, "tel")}
+              {createInput("contact", "WHATSAPP NUMBER", faPhone, "tel", "e.g. 9876543210")}
               {createInput("college", "COLLEGE NAME", faSchool)}
               {createInput("course", "COURSE", faGraduationCap)}
               {createInput("sem", "SEMESTER", faCalendarAlt)}
