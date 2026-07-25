@@ -13,6 +13,7 @@ import CountdownTimer from './components/CountdownTimer';
 import Sponsors from './components/Sponsors';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import Admin from './components/pages/Admin';
+import EventCoordinatorView from './components/pages/EventCoordinatorView';
 import ComingSoon from './components/pages/ComingSoon';
 
 const Home = () => (
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/events" element={<Events />} />
         <Route path="/gallery" element={    <ComingSoon/>} />
         <Route path="/admin" element={<Admin/>} />
+        <Route path="/admin/:slug" element={<EventCoordinatorView/>} />
       </Routes>
       <ScrollToTopButton />
       <Footer />
