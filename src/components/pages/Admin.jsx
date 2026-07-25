@@ -167,9 +167,21 @@ const Admin = () => {
                     <td data-label="Semester">{participant.sem}</td>
                     <td data-label="Events">
                       <ul className="admin-event-list">
-                        {participant.selectedEvents?.map((event, i) => (
-                          <li key={i}>{event}</li>
-                        ))}
+                        {participant.selectedEvents?.map((event, i) => {
+                          const team = participant.groupTeams?.find(t => t.eventName === event);
+                          return (
+                            <li key={i}>
+                              {event}
+                              {team?.members?.length > 0 && (
+                                <ul className="admin-team-list">
+                                  {team.members.map((m, j) => (
+                                    <li key={j}>{m.name} ({m.contact})</li>
+                                  ))}
+                                </ul>
+                              )}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </td>
                     <td data-label="Present">{participant.isPresent ? '✅' : '❌'}</td>
