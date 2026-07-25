@@ -35,7 +35,8 @@ const RegistrationForm = () => {
     course: '',
     sem: '',
     selectedEvents: [],
-    idPhoto: null
+    idPhoto: null,
+    teams: {} // { [eventId]: [{ name, contact }, ...] }
   });
 
   const [errors, setErrors] = useState({});
@@ -45,14 +46,16 @@ const RegistrationForm = () => {
   const statusRef = React.useRef(null);
 
   const events = [
-    { id: 'promptarena', name: 'PROMPT ARENA - Prompt Engineering' },
-    { id: 'visioncraft', name: 'VISION CRAFT - Prompt to Website' },
-    { id: 'cyphra', name: 'CYPHRA - Debugging' },
-    { id: 'vestigealibi', name: 'VESTIGE ALIBI - Crime Investigation' },
-    { id: 'synthsteel', name: 'SYNTH & STEEL - Idea Presentation' },
-    { id: 'obsidiantrail', name: 'THE OBSIDIAN TRAIL - Treasure Hunt' },
-    { id: 'memora', name: 'MEMORA - Meme Creation' }
+    { id: 'promptarena', name: 'PROMPT ARENA - Prompt Engineering', type: 'individual' },
+    { id: 'visioncraft', name: 'VISION CRAFT - Prompt to Website', type: 'group', minTeammates: 2, maxTeammates: 2},
+    { id: 'cyphra', name: 'CYPHRA - Debugging', type: 'individual' },
+    { id: 'vestigealibi', name: 'VESTIGE ALIBI - Crime Investigation', type: 'group', minTeammates: 2, maxTeammates: 2 },
+    { id: 'synthsteel', name: 'SYNTH & STEEL - Idea Presentation', type: 'group', minTeammates: 1, maxTeammates: 3 },
+    { id: 'obsidiantrail', name: 'THE OBSIDIAN TRAIL - Treasure Hunt', type: 'group', minTeammates: 3, maxTeammates: 3 },
+    { id: 'memora', name: 'MEMORA - Meme Creation', type: 'individual' }
   ];
+
+  const emptyMember = () => ({ name: '', contact: '' });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -90,12 +93,49 @@ const RegistrationForm = () => {
   };
 
   const handleEventToggle = (eventId) => {
-    const newSelected = formData.selectedEvents.includes(eventId)
+    const event = events.find(e => e.id === eventId);
+    const isSelected = formData.selectedEvents.includes(eventId);
+    const newSelected = isSelected
       ? formData.selectedEvents.filter(id => id !== eventId)
       : [...formData.selectedEvents, eventId];
 
-    setFormData({ ...formData, selectedEvents: newSelected });
-    setErrors({ ...errors, selectedEvents: newSelected.length ? '' : 'Select at least one event' });
+    const newTeams = { ...formData.teams };
+    if (isSelected) {
+      // Unselecting: drop its teammate data
+      delete newTeams[eventId];
+    } else if (event.type === 'group') {
+      // Selecting a group event: start with the minimum required teammate rows
+      newTeams[eventId] = Array.from({ length: event.minTeammates }, emptyMember);
+    }
+
+    setFormData({ ...formData, selectedEvents: newSelected, teams: newTeams });
+    setErrors({ ...errors, selectedEvents: newSelected.length ? '' : 'Select at least one event', [`team_${eventId}`]: '' });
+  };
+
+  const addTeammate = (eventId) => {
+    const event = events.find(e => e.id === eventId);
+    const current = formData.teams[eventId] || [];
+    if (current.length >= event.maxTeammates) return;
+    setFormData({
+      ...formData,
+      teams: { ...formData.teams, [eventId]: [...current, emptyMember()] }
+    });
+  };
+
+  const removeTeammate = (eventId, index) => {
+    const event = events.find(e => e.id === eventId);
+    const current = formData.teams[eventId] || [];
+    if (current.length <= event.minTeammates) return;
+    setFormData({
+      ...formData,
+      teams: { ...formData.teams, [eventId]: current.filter((_, i) => i !== index) }
+    });
+  };
+
+  const handleTeammateChange = (eventId, index, field, value) => {
+    const current = formData.teams[eventId] || [];
+    const updated = current.map((member, i) => (i === index ? { ...member, [field]: value } : member));
+    setFormData({ ...formData, teams: { ...formData.teams, [eventId]: updated } });
   };
 
   const validateForm = () => {
@@ -124,6 +164,28 @@ const RegistrationForm = () => {
       newErrors.selectedEvents = 'Select at least one event';
       isValid = false;
     }
+
+    formData.selectedEvents.forEach(eventId => {
+      const event = events.find(e => e.id === eventId);
+      if (event?.type !== 'group') return;
+
+      const members = formData.teams[eventId] || [];
+      const sizeLabel = event.minTeammates === event.maxTeammates
+        ? `${event.minTeammates}`
+        : `${event.minTeammates}-${event.maxTeammates}`;
+
+      if (members.length < event.minTeammates || members.length > event.maxTeammates) {
+        newErrors[`team_${eventId}`] = `${event.name.split(' - ')[0]} needs ${sizeLabel} teammate(s) besides yourself`;
+        isValid = false;
+        return;
+      }
+
+      const hasIncompleteMember = members.some(m => !m.name.trim() || !/^[6-9]\d{9}$/.test(m.contact.trim()));
+      if (hasIncompleteMember) {
+        newErrors[`team_${eventId}`] = 'Enter a name and valid 10-digit contact number for every teammate';
+        isValid = false;
+      }
+    });
 
     setErrors(newErrors);
     return isValid;
@@ -160,6 +222,18 @@ const RegistrationForm = () => {
         formPayload.append('selectedEvents[]', eventName);
       });
 
+      const groupTeams = formData.selectedEvents
+        .map(eventId => events.find(e => e.id === eventId))
+        .filter(event => event.type === 'group')
+        .map(event => ({
+          eventName: event.name,
+          members: formData.teams[event.id] || []
+        }));
+
+      if (groupTeams.length > 0) {
+        formPayload.append('groupTeams', JSON.stringify(groupTeams));
+      }
+
       const response = await fetch(`${API_URL}/api/register`, {
         method: 'POST',
         body: formPayload
@@ -177,7 +251,8 @@ const RegistrationForm = () => {
           course: '',
           sem: '',
           selectedEvents: [],
-          idPhoto: null
+          idPhoto: null,
+          teams: {}
         });
         setTouched({});
       } else {
@@ -218,6 +293,80 @@ const RegistrationForm = () => {
     </Box>
   );
 
+  const renderEventCheckbox = (event) => (
+    <Box key={event.id} className="event-item">
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={formData.selectedEvents.includes(event.id)}
+            onChange={() => handleEventToggle(event.id)}
+            name={event.id}
+            className="event-checkbox"
+          />
+        }
+        label={
+          event.type === 'group'
+            ? `${event.name} (Group of ${event.minTeammates === event.maxTeammates ? event.minTeammates + 1 : `${event.minTeammates + 1}-${event.maxTeammates + 1}`})`
+            : event.name
+        }
+        className="event-label"
+      />
+
+      {event.type === 'group' && formData.selectedEvents.includes(event.id) && (
+        <Box className="team-members-section">
+          <Typography variant="caption" className="team-members-hint">
+            Add your teammate{event.maxTeammates > 1 ? 's' : ''} for this event (don't include yourself)
+          </Typography>
+
+          {(formData.teams[event.id] || []).map((member, index) => (
+            <Box key={index} className="team-member-row">
+              <TextField
+                size="small"
+                label={`Teammate ${index + 1} Name`}
+                value={member.name}
+                onChange={(e) => handleTeammateChange(event.id, index, 'name', e.target.value)}
+                className="team-member-input"
+              />
+              <TextField
+                size="small"
+                label="Contact Number"
+                value={member.contact}
+                onChange={(e) => handleTeammateChange(event.id, index, 'contact', e.target.value)}
+                className="team-member-input"
+              />
+              {(formData.teams[event.id]?.length || 0) > event.minTeammates && (
+                <Button
+                  size="small"
+                  onClick={() => removeTeammate(event.id, index)}
+                  className="team-member-remove"
+                >
+                  Remove
+                </Button>
+              )}
+            </Box>
+          ))}
+
+          {(formData.teams[event.id]?.length || 0) < event.maxTeammates && (
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => addTeammate(event.id)}
+              className="team-member-add"
+            >
+              + Add Teammate
+            </Button>
+          )}
+
+          {errors[`team_${event.id}`] && (
+            <FormHelperText error className="error-text">
+              {errors[`team_${event.id}`]}
+            </FormHelperText>
+          )}
+        </Box>
+      )}
+    </Box>
+  );
+
   return (
     <Box className="registration-page">
       <Box className="form-section">
@@ -248,25 +397,19 @@ const RegistrationForm = () => {
               {/* Event Selection */}
               <Box className="events-section">
                 <Typography variant="h6" className="events-title">
-                  SELECT EVENTS
+                  INDIVIDUAL EVENTS
                 </Typography>
                 <FormGroup className="events-group">
-                  {events.map((event) => (
-                    <FormControlLabel
-                      key={event.id}
-                      control={
-                        <Checkbox
-                          checked={formData.selectedEvents.includes(event.id)}
-                          onChange={() => handleEventToggle(event.id)}
-                          name={event.id}
-                          className="event-checkbox"
-                        />
-                      }
-                      label={event.name}
-                      className="event-label"
-                    />
-                  ))}
+                  {events.filter(e => e.type === 'individual').map(renderEventCheckbox)}
                 </FormGroup>
+
+                <Typography variant="h6" className="events-title events-title-group">
+                  GROUP EVENTS
+                </Typography>
+                <FormGroup className="events-group">
+                  {events.filter(e => e.type === 'group').map(renderEventCheckbox)}
+                </FormGroup>
+
                 {errors.selectedEvents && (
                   <FormHelperText error className="error-text">
                     {errors.selectedEvents}
