@@ -251,6 +251,28 @@
   min-width: 140px;
 }
 
+.team-member-input .MuiOutlinedInput-root {
+  color: white !important;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.team-member-input .MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.team-member-input .MuiInputLabel-root.Mui-focused {
+  color: var(--neon-blue) !important;
+}
+
+.team-member-input .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(127, 255, 212, 0.5) !important;
+}
+
+.team-member-input .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--neon-blue) !important;
+}
+
 .team-member-remove {
   color: #ff6b6b !important;
   white-space: nowrap;
