@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import AdminLogin from './AdminLogin';
 import { API_URL } from '../../config/api';
+import { getAxiosConfig, getEventStatus, updateEventPayment, patchEventStatus } from '../../utils/adminEventStatus';
+import { EVENT_NAME_TO_SLUG } from '../../config/eventSlugs';
 import './Admin.css';
 
 const Admin = () => {
@@ -12,12 +15,7 @@ const Admin = () => {
   const [selectedEvent, setSelectedEvent] = useState('');
   const [error, setError] = useState('');
 
-  const axiosConfig = {
-    headers: {
-      'admin-auth': token,
-      'Content-Type': 'application/json'
-    }
-  };
+  const axiosConfig = getAxiosConfig(token);
 
   useEffect(() => {
     if (token) fetchRegistrations();
@@ -33,7 +31,6 @@ const Admin = () => {
     } catch (err) {
       console.error(err);
       if (err.response?.status === 401) {
-        // Session expired or invalid — send back to login
         handleLogout();
         setError('Session expired. Please log in again.');
       } else {
@@ -44,9 +41,7 @@ const Admin = () => {
     }
   };
 
-  const handleLoginSuccess = (newToken) => {
-    setToken(newToken);
-  };
+  const handleLoginSuccess = (newToken) => setToken(newToken);
 
   const handleLogout = () => {
     sessionStorage.removeItem('adminToken');
@@ -64,22 +59,26 @@ const Admin = () => {
     );
   };
 
-  const markPresent = async (id) => {
+  const setPresence = async (id, eventName, isPresent) => {
     try {
-      await axios.put(`${API_URL}/api/admin/attendance/${id}`, { isPresent: true }, axiosConfig);
-      const update = (list) => list.map(r => (r._id === id ? { ...r, isPresent: true } : r));
+      await axios.put(
+        `${API_URL}/api/admin/attendance/${id}`,
+        { eventName, isPresent },
+        axiosConfig
+      );
+      const update = (list) => patchEventStatus(list, id, eventName, { isPresent });
       setFiltered(update);
       setRegistrations(update);
     } catch (err) {
-      console.error('Error marking present:', err);
-      alert('Error marking participant as present.');
+      console.error('Error updating attendance:', err);
+      alert('Error updating attendance status.');
     }
   };
 
-  const updatePayment = async (id, paymentMethod) => {
+  const updatePayment = async (id, eventName, paymentMethod) => {
     try {
-      await axios.put(`${API_URL}/api/admin/payment/${id}`, { paymentMethod }, axiosConfig);
-      const update = (list) => list.map(r => (r._id === id ? { ...r, paymentMethod } : r));
+      await updateEventPayment(id, eventName, paymentMethod, token);
+      const update = (list) => patchEventStatus(list, id, eventName, { paymentMethod });
       setFiltered(update);
       setRegistrations(update);
     } catch (err) {
@@ -111,6 +110,11 @@ const Admin = () => {
             <div key={event} className="admin-summary-card">
               <span className="admin-summary-count">{count}</span>
               <span className="admin-summary-label">{event}</span>
+              {EVENT_NAME_TO_SLUG[event] && (
+                <Link to={`/admin/${EVENT_NAME_TO_SLUG[event]}`} className="admin-summary-link">
+                  Open event view →
+                </Link>
+              )}
             </div>
           ))}
         </div>
@@ -147,15 +151,12 @@ const Admin = () => {
                 <th>College</th>
                 <th>Course</th>
                 <th>Semester</th>
-                <th>Events</th>
-                <th>Present</th>
-                <th>Attendance</th>
-                <th>Payment</th>
+                <th>Events (per-event attendance &amp; payment)</th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan="10" className="admin-empty">No participants found.</td></tr>
+                <tr><td colSpan="7" className="admin-empty">No participants found.</td></tr>
               ) : (
                 filtered.map(participant => (
                   <tr key={participant._id}>
@@ -166,12 +167,14 @@ const Admin = () => {
                     <td data-label="Course">{participant.course}</td>
                     <td data-label="Semester">{participant.sem}</td>
                     <td data-label="Events">
-                      <ul className="admin-event-list">
+                      <div className="admin-event-block-list">
                         {participant.selectedEvents?.map((event, i) => {
                           const team = participant.groupTeams?.find(t => t.eventName === event);
+                          const status = getEventStatus(participant, event);
                           return (
-                            <li key={i}>
-                              {event}
+                            <div key={i} className="admin-event-block">
+                              <div className="admin-event-block-name">{event}</div>
+
                               {team?.members?.length > 0 && (
                                 <ul className="admin-team-list">
                                   {team.members.map((m, j) => (
@@ -179,29 +182,32 @@ const Admin = () => {
                                   ))}
                                 </ul>
                               )}
-                            </li>
+
+                              <div className="admin-event-block-controls">
+                                <span className="admin-event-present-status">
+                                  {status.isPresent ? '✅ Present' : '❌ Absent'}
+                                </span>
+                                <button
+                                  className="admin-action-button admin-reset-button"
+                                  onClick={() => setPresence(participant._id, event, !status.isPresent)}
+                                  title="Correct this if a coordinator marked it wrong"
+                                >
+                                  Reset to {status.isPresent ? 'Absent' : 'Present'}
+                                </button>
+                                <select
+                                  className="admin-select admin-select-small"
+                                  value={status.paymentMethod || ''}
+                                  onChange={(e) => updatePayment(participant._id, event, e.target.value || null)}
+                                >
+                                  <option value="">Unpaid</option>
+                                  <option value="cash">Cash</option>
+                                  <option value="online">Online</option>
+                                </select>
+                              </div>
+                            </div>
                           );
                         })}
-                      </ul>
-                    </td>
-                    <td data-label="Present">{participant.isPresent ? '✅' : '❌'}</td>
-                    <td data-label="Attendance">
-                      {!participant.isPresent && (
-                        <button className="admin-action-button" onClick={() => markPresent(participant._id)}>
-                          Mark Present
-                        </button>
-                      )}
-                    </td>
-                    <td data-label="Payment">
-                      <select
-                        className="admin-select admin-select-small"
-                        value={participant.paymentMethod || ''}
-                        onChange={(e) => updatePayment(participant._id, e.target.value || null)}
-                      >
-                        <option value="">Unpaid</option>
-                        <option value="cash">Cash</option>
-                        <option value="online">Online</option>
-                      </select>
+                      </div>
                     </td>
                   </tr>
                 ))
