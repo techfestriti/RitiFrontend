@@ -208,26 +208,7 @@
 }
 
 /* Responsive */
-@media (max-width: 900px) {
-  .footer-content {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  .map-container {
-    order: 1;
-    grid-column: span 2;
-  }
-}
-
 @media (max-width: 600px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-  }
-  
-  .map-container {
-    grid-column: span 1;
-  }
-  
   .footer-links, .footer-contact {
     margin-top: 1.5rem;
   }
