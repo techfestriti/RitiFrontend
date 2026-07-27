@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { API_URL } from '../../config/api';
 import { EVENT_SLUGS } from '../../config/eventSlugs';
-import { getEventStatus, patchEventStatus } from '../../utils/adminEventStatus';
+import { getEventStatus, patchEventStatus, exportEventToExcel } from '../../utils/adminEventStatus';
 import './Admin.css';
 
 const EventCoordinatorView = () => {
@@ -85,6 +85,13 @@ const EventCoordinatorView = () => {
 
       <div className="admin-filter-row">
         <button className="admin-refresh-button" onClick={fetchRegistrations}>Refresh</button>
+        <button
+          className="admin-refresh-button"
+          onClick={() => exportEventToExcel(registrations, eventName)}
+          disabled={registrations.length === 0}
+        >
+          Download Excel
+        </button>
       </div>
 
       {loading ? (
