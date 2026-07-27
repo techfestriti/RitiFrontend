@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AdminLogin from './AdminLogin';
 import { API_URL } from '../../config/api';
-import { getAxiosConfig, getEventStatus, updateEventPayment, patchEventStatus } from '../../utils/adminEventStatus';
+import { getAxiosConfig, getEventStatus, updateEventPayment, patchEventStatus, exportEventToExcel } from '../../utils/adminEventStatus';
 import { EVENT_NAME_TO_SLUG } from '../../config/eventSlugs';
 import './Admin.css';
 
@@ -115,6 +115,12 @@ const Admin = () => {
                   Open event view →
                 </Link>
               )}
+              <button
+                className="admin-summary-link admin-summary-export"
+                onClick={() => exportEventToExcel(registrations.filter(r => r.selectedEvents.includes(event)), event)}
+              >
+                Download Excel
+              </button>
             </div>
           ))}
         </div>
