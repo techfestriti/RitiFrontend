@@ -63,36 +63,8 @@ const Events = () => {
 
       {/* Fun Games Section */}
       <div className="fun-games">
-        <h2>FUN GAMES</h2>
-        <p className="subheading">FUNFINITY</p>
-        <div className="games-list">
-          <ul>
-            <li>PROMPT SKETCH TWIST</li>
-            <li>CHESS PUZZLES</li>
-            <li>KEYBOARD KEY MATCH</li>
-            <li>IMAGE PUZZLES</li>
-            <li>CARD TOWER</li>
-            <li>CUP TOWER WITH STABLE</li>
-            <li>MEMORY QUEST</li>
-            <li>GUESS THE SONG</li>
-            <li>KEYBOARD BUILD</li>
-            <li>RUBIX SOLVING</li>
-            <li>APP ICON IDENTIFYING</li>
-          </ul>
-        </div>
-        <div className="game-details">
-          <p>10.00 AM - 3.30 PM Room No: 826</p>
-          <div className="coordinators">
-            <div className="coordinator">
-              <h4>FACULTY COORDINATOR</h4>
-              <p>Ms Smitha C - 9633610523</p>
-            </div>
-            <div className="coordinator">
-              <h4>STUDENT COORDINATOR</h4>
-              <p>Kalyani K - 9207615096</p>
-            </div>
-          </div>
-        </div>
+        <h2>Enjoy Exciting Fun Games Alongside the Competitions</h2>
+      
       </div>
     </div>
   );
