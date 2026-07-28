@@ -63,7 +63,7 @@ const Events = () => {
 
       {/* Fun Games Section */}
       <div className="fun-games">
-        <h2>Enjoy Exciting Fun Games Alongside the Competitions</h2>
+        <h4>Enjoy Exciting Fun Games Alongside the Competitions</h4>
       
       </div>
     </div>
