@@ -1,3 +1,22 @@
+.admin-summary-export {
+  background: rgba(0, 255, 255, 0.15) !important;
+  border: 1px solid var(--neon-cyan) !important;
+  color: var(--neon-cyan) !important;
+  cursor: pointer;
+  padding: 6px 14px !important;
+  border-radius: 8px;
+  font-family: 'Nova Square', sans-serif;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  transition: all 0.3s ease;
+}
+
+.admin-summary-export:hover {
+  background: rgba(0, 255, 255, 0.3) !important;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
+}
 .admin-page {
   padding: 100px 24px 60px;
   min-height: 100vh;
