@@ -10,7 +10,8 @@ import {
   FormControlLabel,
   Checkbox,
   FormGroup,
-  InputAdornment
+  InputAdornment,
+  MenuItem
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -101,10 +102,8 @@ const RegistrationForm = () => {
 
     const newTeams = { ...formData.teams };
     if (isSelected) {
-      // Unselecting: drop its teammate data
       delete newTeams[eventId];
     } else if (event.type === 'group') {
-      // Selecting a group event: start with the minimum required teammate rows
       newTeams[eventId] = Array.from({ length: event.minTeammates }, emptyMember);
     }
 
@@ -266,15 +265,15 @@ const RegistrationForm = () => {
       setSubmitStatus({ success: false, message: 'Network error. Please check your connection and try again.' });
     } finally {
       setIsSubmitting(false);
-      // Give React a tick to render the message before scrolling to it
       setTimeout(() => statusRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
     }
   };
 
-  const createInput = (name, label, icon, type = 'text', placeholder = '') => (
+  const createInput = (name, label, icon, type = 'text', placeholder = '', isSelect = false) => (
     <Box className="input-field">
       <TextField
         fullWidth
+        select={isSelect}
         type={type}
         name={name}
         label={label}
@@ -286,14 +285,18 @@ const RegistrationForm = () => {
         helperText={errors[name]}
         required
         className="form-input"
-        InputProps={{
+        InputProps={!isSelect ? {
           startAdornment: (
             <InputAdornment position="start">
               <FontAwesomeIcon icon={icon} className="input-icon" />
             </InputAdornment>
           )
-        }}
-      />
+        } : undefined}
+      >
+        {isSelect && [1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+          <MenuItem key={num} value={String(num)}>{num}</MenuItem>
+        ))}
+      </TextField>
     </Box>
   );
 
@@ -404,7 +407,7 @@ const RegistrationForm = () => {
               {createInput("contact", "WHATSAPP NUMBER", faPhone, "tel", "e.g. 9876543210")}
               {createInput("college", "COLLEGE NAME", faSchool)}
               {createInput("course", "COURSE", faGraduationCap)}
-              {createInput("sem", "SEMESTER", faCalendarAlt)}
+              {createInput("sem", "SEMESTER", faCalendarAlt, "text", "", true)}
 
               {/* Event Selection */}
               <Box className="events-section">
