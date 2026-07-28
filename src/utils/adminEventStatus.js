@@ -50,7 +50,7 @@ export const exportEventToExcel = (registrations, eventName) => {
   const rows = registrations.map(participant => {
     const status = getEventStatus(participant, eventName);
     const team = participant.groupTeams?.find(t => t.eventName === eventName);
-    const teamNames = team?.members?.map(m => `${m.name} (${m.contact})`).join('; ') || '';
+    const teamNames = team?.members?.map(m => `${m.name} (${m.email}, ${m.contact})`).join('; ') || '';
 
     return {
       Name: participant.name,
