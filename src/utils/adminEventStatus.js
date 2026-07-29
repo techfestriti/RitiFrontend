@@ -46,9 +46,10 @@ export const patchEventStatus = (list, id, eventName, changes) =>
   });
 
 // Export a single event's registration list to a downloadable .xlsx file.
-// Each teammate gets their own row directly underneath the registrant
-// (marked via the "Role" / "Team Of" columns) instead of being crammed
-// sideways into extra columns or squeezed into one semicolon-separated cell.
+// For group events, each teammate gets their own row directly underneath
+// the registrant (using the same Name/Email/Contact/College columns),
+// followed by a blank spacer row before the next registrant's block.
+// Individual events have no teammates, so they stay one row per person.
 export const exportEventToExcel = (registrations, eventName) => {
   const rows = [];
 
@@ -81,10 +82,13 @@ export const exportEventToExcel = (registrations, eventName) => {
       });
     });
 
-    // Blank spacer row so the next registrant's block is easy to spot.
-    rows.push({
-      Name: '', Email: '', Contact: '', College: '', Course: '', Semester: '', Present: '', Payment: ''
-    });
+    // Only add a spacer row when this registrant actually has teammates
+    // (i.e. a group event) — individual-event exports stay one row per person.
+    if (members.length > 0) {
+      rows.push({
+        Name: '', Email: '', Contact: '', College: '', Course: '', Semester: '', Present: '', Payment: ''
+      });
+    }
   });
 
   const worksheet = XLSX.utils.json_to_sheet(rows);
