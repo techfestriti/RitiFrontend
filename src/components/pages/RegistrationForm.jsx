@@ -56,7 +56,7 @@ const RegistrationForm = () => {
     { id: 'memora', name: 'MEMORA - Meme Creation', type: 'individual' }
   ];
 
-  const emptyMember = () => ({ name: '', contact: '', email: '' });
+  const emptyMember = () => ({ name: '', contact: '', email: '', college: '' });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -181,10 +181,10 @@ const RegistrationForm = () => {
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const hasIncompleteMember = members.some(
-        m => !m.name.trim() || !/^[6-9]\d{9}$/.test(m.contact.trim()) || !emailRegex.test(m.email.trim())
+        m => !m.name.trim() || !/^[6-9]\d{9}$/.test(m.contact.trim()) || !emailRegex.test(m.email.trim()) || !m.college.trim()
       );
       if (hasIncompleteMember) {
-        newErrors[`team_${eventId}`] = 'Enter a name, valid email, and valid 10-digit contact number (starting with 6, 7, 8, or 9) for every teammate';
+        newErrors[`team_${eventId}`] = 'Enter a name, valid email, valid 10-digit contact number (starting with 6, 7, 8, or 9), and college name for every teammate';
         isValid = false;
       }
     });
@@ -347,6 +347,13 @@ const RegistrationForm = () => {
                 placeholder="e.g. 9876543210"
                 value={member.contact}
                 onChange={(e) => handleTeammateChange(event.id, index, 'contact', e.target.value)}
+                className="team-member-input"
+              />
+              <TextField
+                size="small"
+                label="College Name"
+                value={member.college}
+                onChange={(e) => handleTeammateChange(event.id, index, 'college', e.target.value)}
                 className="team-member-input"
               />
               {(formData.teams[event.id]?.length || 0) > event.minTeammates && (
