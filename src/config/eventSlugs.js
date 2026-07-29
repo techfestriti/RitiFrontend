@@ -3,10 +3,10 @@
 export const EVENT_SLUGS = {
   promptarena2026: 'PROMPT ARENA - Prompt Engineering',
   visioncraft2026: 'VISION CRAFT - Prompt to Website',
-  cypera2026: 'CYPHRA - Debugging',
+  cyphra2026: 'CYPHRA - Debugging',
   vestigealibi2026: 'VESTIGE ALIBI - Crime Investigation',
-  synthsteel2026: 'SYNTH & STEEL - Idea Presentation',
-  obsidiantrail2026: 'THE OBSIDIAN TRAIL - Treasure Hunt',
+  synthandsteel2026: 'SYNTH & STEEL - Idea Presentation',
+  theobsidiantrail2026: 'THE OBSIDIAN TRAIL - Treasure Hunt',
   memora2026: 'MEMORA - Meme Creation'
 };
 
