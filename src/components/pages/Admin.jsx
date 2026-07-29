@@ -184,7 +184,7 @@ const Admin = () => {
                               {team?.members?.length > 0 && (
                                 <ul className="admin-team-list">
                                   {team.members.map((m, j) => (
-                                    <li key={j}>{m.name} ({m.email}, {m.contact})</li>
+                                    <li key={j}>{m.name} ({m.college}, {m.email}, {m.contact})</li>
                                   ))}
                                 </ul>
                               )}
