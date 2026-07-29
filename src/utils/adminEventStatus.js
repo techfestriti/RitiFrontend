@@ -46,26 +46,60 @@ export const patchEventStatus = (list, id, eventName, changes) =>
   });
 
 // Export a single event's registration list to a downloadable .xlsx file.
+// Each teammate gets their own row directly underneath the registrant
+// (marked via the "Role" / "Team Of" columns) instead of being crammed
+// sideways into extra columns or squeezed into one semicolon-separated cell.
 export const exportEventToExcel = (registrations, eventName) => {
-  const rows = registrations.map(participant => {
+  const rows = [];
+
+  registrations.forEach(participant => {
     const status = getEventStatus(participant, eventName);
     const team = participant.groupTeams?.find(t => t.eventName === eventName);
-    const teamNames = team?.members?.map(m => `${m.name} (${m.email}, ${m.contact})`).join('; ') || '';
+    const members = team?.members || [];
 
-    return {
+    rows.push({
       Name: participant.name,
       Email: participant.email,
       Contact: participant.contact,
       College: participant.college,
       Course: participant.course,
       Semester: participant.sem,
-      Teammates: teamNames,
       Present: status.isPresent ? 'Yes' : 'No',
       Payment: status.paymentMethod ? status.paymentMethod : 'Unpaid'
-    };
+    });
+
+    members.forEach(member => {
+      rows.push({
+        Name: member.name || '',
+        Email: member.email || '',
+        Contact: member.contact || '',
+        College: member.college || '',
+        Course: '',
+        Semester: '',
+        Present: '',
+        Payment: ''
+      });
+    });
+
+    // Blank spacer row so the next registrant's block is easy to spot.
+    rows.push({
+      Name: '', Email: '', Contact: '', College: '', Course: '', Semester: '', Present: '', Payment: ''
+    });
   });
 
   const worksheet = XLSX.utils.json_to_sheet(rows);
+
+  // Auto-size columns based on the longest value in each column so nothing
+  // gets clipped when opened in Excel/Sheets.
+  const headers = Object.keys(rows[0] || {});
+  worksheet['!cols'] = headers.map(header => {
+    const longest = rows.reduce((max, row) => {
+      const len = String(row[header] ?? '').length;
+      return len > max ? len : max;
+    }, header.length);
+    return { wch: Math.min(Math.max(longest + 2, 10), 40) };
+  });
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Registrations');
 
