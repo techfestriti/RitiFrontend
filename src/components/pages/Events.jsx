@@ -1,4 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import './Events.css';
 
 const MIN_SCALE = 1;
@@ -23,6 +24,18 @@ const Events = () => {
     { id: 6, src: '6.png', alt: 'Event Brochure 6' },
     { id: 7, src: '7.png', alt: 'Event Brochure 7' },
   ];
+
+  // Lock background scroll while the zoom modal is open
+  useEffect(() => {
+    if (zoomedImage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [zoomedImage]);
 
   const handleDownload = (type) => {
     const pdfFiles = {
@@ -66,7 +79,6 @@ const Events = () => {
     });
   };
 
-  // Smooth wheel zoom, no jumping
   const handleWheel = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -78,7 +90,6 @@ const Events = () => {
     });
   }, []);
 
-  // Double-click to toggle zoom
   const handleDoubleClick = (e) => {
     e.stopPropagation();
     if (scale > MIN_SCALE) {
@@ -89,7 +100,6 @@ const Events = () => {
     }
   };
 
-  // Drag to pan once zoomed in
   const handleMouseDown = (e) => {
     if (scale <= MIN_SCALE) return;
     e.preventDefault();
@@ -107,7 +117,6 @@ const Events = () => {
 
   const stopDragging = () => setDragging(false);
 
-  // Basic single-finger touch pan (mirrors mouse drag)
   const handleTouchStart = (e) => {
     if (scale <= MIN_SCALE || e.touches.length !== 1) return;
     const touch = e.touches[0];
@@ -150,7 +159,9 @@ const Events = () => {
         </div>
       </div>
 
-      {zoomedImage && (
+      {/* Portal ensures this always overlays the ENTIRE site, never gets
+          trapped inside the grid or pushed to the bottom of the page */}
+      {zoomedImage && createPortal(
         <div className="zoom-overlay" onClick={closeZoom}>
           <button className="zoom-close" onClick={closeZoom} aria-label="Close">✕</button>
           <div className="zoom-controls" onClick={(e) => e.stopPropagation()}>
@@ -165,31 +176,3 @@ const Events = () => {
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
-            onMouseUp={stopDragging}
-            onMouseLeave={stopDragging}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={stopDragging}
-          >
-            <img
-              src={zoomedImage.src}
-              alt={zoomedImage.alt}
-              className={`zoom-image ${dragging ? 'dragging' : ''}`}
-              style={{
-                transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-              }}
-              onDoubleClick={handleDoubleClick}
-              draggable={false}
-            />
-          </div>
-        </div>
-      )}
-
-      <div className="fun-games">
-        <h4>Enjoy Exciting Fun Games Alongside the Competitions</h4>
-      </div>
-    </div>
-  );
-};
-
-export default Events;
