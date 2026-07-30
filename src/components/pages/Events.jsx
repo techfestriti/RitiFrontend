@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import './Events.css';
+
+const MIN_SCALE = 1;
+const MAX_SCALE = 3;
+const WHEEL_ZOOM_STEP = 0.15;
 
 const Events = () => {
   const [zoomedImage, setZoomedImage] = useState(null);
   const [scale, setScale] = useState(1);
+  const [origin, setOrigin] = useState({ x: 50, y: 50 });
+  const wrapperRef = useRef(null);
 
   const brochureImages = [
     { id: 1, src: '2.png', alt: 'Event Brochure 1' },
@@ -30,11 +36,13 @@ const Events = () => {
   const openZoom = (image) => {
     setZoomedImage(image);
     setScale(1);
+    setOrigin({ x: 50, y: 50 });
   };
 
   const closeZoom = () => {
     setZoomedImage(null);
     setScale(1);
+    setOrigin({ x: 50, y: 50 });
   };
 
   const handleImageClick = (e) => {
@@ -44,13 +52,33 @@ const Events = () => {
 
   const zoomIn = (e) => {
     e.stopPropagation();
-    setScale((prev) => Math.min(prev + 0.5, 3));
+    setScale((prev) => Math.min(prev + 0.5, MAX_SCALE));
   };
 
   const zoomOut = (e) => {
     e.stopPropagation();
-    setScale((prev) => Math.max(prev - 0.5, 1));
+    setScale((prev) => Math.max(prev - 0.5, MIN_SCALE));
   };
+
+  // Mouse-wheel controlled zoom, centered on cursor position
+  const handleWheel = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const wrapper = wrapperRef.current;
+    if (wrapper) {
+      const rect = wrapper.getBoundingClientRect();
+      const offsetX = ((e.clientX - rect.left) / rect.width) * 100;
+      const offsetY = ((e.clientY - rect.top) / rect.height) * 100;
+      setOrigin({ x: offsetX, y: offsetY });
+    }
+
+    setScale((prev) => {
+      const direction = e.deltaY < 0 ? 1 : -1;
+      const next = prev + direction * WHEEL_ZOOM_STEP;
+      return Number(Math.min(MAX_SCALE, Math.max(MIN_SCALE, next)).toFixed(2));
+    });
+  }, []);
 
   return (
     <div className="events-container">
@@ -84,20 +112,27 @@ const Events = () => {
       {zoomedImage && (
         <div className="zoom-overlay" onClick={closeZoom}>
           <button className="zoom-close" onClick={closeZoom} aria-label="Close">✕</button>
-
           <div className="zoom-controls" onClick={(e) => e.stopPropagation()}>
             <button onClick={zoomOut} disabled={scale <= 1} aria-label="Zoom out">−</button>
             <span className="zoom-level">{Math.round(scale * 100)}%</span>
             <button onClick={zoomIn} disabled={scale >= 3} aria-label="Zoom in">+</button>
           </div>
-
-          <div className="zoom-image-wrapper">
+          <div
+            className="zoom-image-wrapper"
+            ref={wrapperRef}
+            onClick={(e) => e.stopPropagation()}
+            onWheel={handleWheel}
+          >
             <img
               src={zoomedImage.src}
               alt={zoomedImage.alt}
               className="zoom-image"
-              style={{ transform: `scale(${scale})` }}
+              style={{
+                transform: `scale(${scale})`,
+                transformOrigin: `${origin.x}% ${origin.y}%`,
+              }}
               onClick={handleImageClick}
+              draggable={false}
             />
           </div>
         </div>
