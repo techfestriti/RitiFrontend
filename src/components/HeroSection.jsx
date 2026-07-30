@@ -14,7 +14,7 @@ const HeroSection = () => {
         </h1>
         
         <p className="cyber-desc">
-          REFLECT <span className="cyber-slash">//</span> THE <span className="cyber-slash">//</span> RADIENCE
+          REFLECT <span className="cyber-slash">//</span> THE <span className="cyber-slash">//</span> RADIANCE
         </p>
         
         <div className="cyber-buttons">
