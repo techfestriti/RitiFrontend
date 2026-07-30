@@ -243,7 +243,7 @@ const ContactPage = () => {
         <div style={styles.contactInfo}>
           <div style={styles.contactItem}>
             <span style={styles.icon}>📧</span>
-            <a href="mailto:techfestriti@gmail.com" style={{ color: 'white', textDecoration: 'none' }}>
+            <a href="mailto:techfestriti@gmail.com" style={{ color: 'white', textDecoration: 'none', text-transform: 'lowercase' }}>
               techfestriti@gmail.com
             </a>
           </div>
