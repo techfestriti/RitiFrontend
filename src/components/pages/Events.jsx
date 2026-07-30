@@ -5,12 +5,12 @@ import './Events.css';
 const Events = () => {
   // Sample event images
   const brochureImages = [
-    { id: 1, src: '2.png', alt: 'Event Brochure 1' },
-    { id: 2, src: '3.png', alt: 'Event Brochure 2' },
-    { id: 3, src: '4.png', alt: 'Event Brochure 3' },
-    { id: 4, src: '5.png', alt: 'Event Brochure 4' },
-    { id: 5, src: '6.png', alt: 'Event Brochure 5' },
-    { id: 6, src: '7.png', alt: 'Event Brochure 6' },
+    { id: 1, src: '2.jpg', alt: 'Event Brochure 1' },
+    { id: 2, src: '3.jpg', alt: 'Event Brochure 2' },
+    { id: 3, src: '4.jpg', alt: 'Event Brochure 3' },
+    { id: 4, src: '5.jpg', alt: 'Event Brochure 4' },
+    { id: 5, src: '6.jpg', alt: 'Event Brochure 5' },
+    { id: 6, src: '7.jpg', alt: 'Event Brochure 6' },
   ];
 
   // Function to handle download
@@ -18,7 +18,7 @@ const Events = () => {
     // Replace these with your actual PDF file paths
     const pdfFiles = {
       Brochure: 'RITI BROCHURE.pdf',
-      Notice: 'notice.pdf'
+      Notice: 'events landing.pdf'
     };
 
     // Create a temporary anchor element
