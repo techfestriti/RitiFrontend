@@ -24,7 +24,7 @@ const Events = () => {
     // Create a temporary anchor element
     const link = document.createElement('a');
     link.href = pdfFiles[type];
-    link.download = `RITI-TechFest-2025-${type}.pdf`;
+    link.download = `RITI-TechFest-2026-${type}.pdf`;
     
     // Trigger the download
     document.body.appendChild(link);
