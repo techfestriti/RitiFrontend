@@ -18,7 +18,7 @@ const Events = () => {
     // Replace these with your actual PDF file paths
     const pdfFiles = {
       Brochure: 'RITI BROCHURE.pdf',
-      Notice: 'events landing.pdf'
+      Notice: 'events_landing.pdf'
     };
 
     // Create a temporary anchor element
