@@ -12,12 +12,13 @@ const Events = () => {
   const wrapperRef = useRef(null);
 
   const brochureImages = [
-    { id: 1, src: '2.png', alt: 'Event Brochure 1' },
-    { id: 2, src: '3.png', alt: 'Event Brochure 2' },
-    { id: 3, src: '4.png', alt: 'Event Brochure 3' },
-    { id: 4, src: '5.png', alt: 'Event Brochure 4' },
-    { id: 5, src: '6.png', alt: 'Event Brochure 5' },
-    { id: 6, src: '7.png', alt: 'Event Brochure 6' },
+    { id: 1, src: '1.png', alt: 'Event Brochure 1' },
+    { id: 2, src: '2.png', alt: 'Event Brochure 2' },
+    { id: 3, src: '3.png', alt: 'Event Brochure 3' },
+    { id: 4, src: '4.png', alt: 'Event Brochure 4' },
+    { id: 5, src: '5.png', alt: 'Event Brochure 5' },
+    { id: 6, src: '6.png', alt: 'Event Brochure 6' },
+    { id: 7, src: '7.png', alt: 'Event Brochure 7' },
   ];
 
   const handleDownload = (type) => {
