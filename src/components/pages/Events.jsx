@@ -25,7 +25,6 @@ const Events = () => {
     { id: 7, src: '7.png', alt: 'Event Brochure 7' },
   ];
 
-  // Lock background scroll while the zoom modal is open
   useEffect(() => {
     if (zoomedImage) {
       document.body.style.overflow = 'hidden';
@@ -159,8 +158,6 @@ const Events = () => {
         </div>
       </div>
 
-      {/* Portal ensures this always overlays the ENTIRE site, never gets
-          trapped inside the grid or pushed to the bottom of the page */}
       {zoomedImage && createPortal(
         <div className="zoom-overlay" onClick={closeZoom}>
           <button className="zoom-close" onClick={closeZoom} aria-label="Close">✕</button>
@@ -176,3 +173,32 @@ const Events = () => {
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
+            onMouseUp={stopDragging}
+            onMouseLeave={stopDragging}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={stopDragging}
+          >
+            <img
+              src={zoomedImage.src}
+              alt={zoomedImage.alt}
+              className={`zoom-image ${dragging ? 'dragging' : ''}`}
+              style={{
+                transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+              }}
+              onDoubleClick={handleDoubleClick}
+              draggable={false}
+            />
+          </div>
+        </div>,
+        document.body
+      )}
+
+      <div className="fun-games">
+        <h4>Enjoy Exciting Fun Games Alongside the Competitions</h4>
+      </div>
+    </div>
+  );
+};
+
+export default Events;
