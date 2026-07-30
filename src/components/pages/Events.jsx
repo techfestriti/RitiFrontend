@@ -43,7 +43,7 @@ const Events = () => {
     };
     const link = document.createElement('a');
     link.href = pdfFiles[type];
-    link.download = `RITI-TechFest-2025-${type}.pdf`;
+    link.download = `RITI-TechFest-2026-${type}.pdf`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
