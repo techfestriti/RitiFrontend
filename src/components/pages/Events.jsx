@@ -3,8 +3,8 @@ import './Events.css';
 
 const Events = () => {
   const [zoomedImage, setZoomedImage] = useState(null);
+  const [scale, setScale] = useState(1);
 
-  // Sample event images
   const brochureImages = [
     { id: 1, src: '2.png', alt: 'Event Brochure 1' },
     { id: 2, src: '3.png', alt: 'Event Brochure 2' },
@@ -14,20 +14,42 @@ const Events = () => {
     { id: 6, src: '7.png', alt: 'Event Brochure 6' },
   ];
 
-  // Function to handle download
   const handleDownload = (type) => {
     const pdfFiles = {
       Brochure: 'RITI BROCHURE.pdf',
       Notice: 'events_landing.pdf'
     };
-
     const link = document.createElement('a');
     link.href = pdfFiles[type];
     link.download = `RITI-TechFest-2025-${type}.pdf`;
-
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const openZoom = (image) => {
+    setZoomedImage(image);
+    setScale(1);
+  };
+
+  const closeZoom = () => {
+    setZoomedImage(null);
+    setScale(1);
+  };
+
+  const handleImageClick = (e) => {
+    e.stopPropagation();
+    setScale((prev) => (prev < 2.5 ? prev + 0.5 : 1));
+  };
+
+  const zoomIn = (e) => {
+    e.stopPropagation();
+    setScale((prev) => Math.min(prev + 0.5, 3));
+  };
+
+  const zoomOut = (e) => {
+    e.stopPropagation();
+    setScale((prev) => Math.max(prev - 0.5, 1));
   };
 
   return (
@@ -42,11 +64,7 @@ const Events = () => {
       <div className="brochure-section">
         <div className="brochure-gallery">
           {brochureImages.map((image) => (
-            <div
-              key={image.id}
-              className="brochure-item"
-              onClick={() => setZoomedImage(image)}
-            >
+            <div key={image.id} className="brochure-item" onClick={() => openZoom(image)}>
               <img src={image.src} alt={image.alt} className="brochure-image" />
               <div className="zoom-hint">🔍 Click to zoom</div>
             </div>
@@ -64,20 +82,24 @@ const Events = () => {
 
       {/* Zoom Modal */}
       {zoomedImage && (
-        <div className="zoom-overlay" onClick={() => setZoomedImage(null)}>
-          <button
-            className="zoom-close"
-            onClick={() => setZoomedImage(null)}
-            aria-label="Close"
-          >
-            ✕
-          </button>
-          <img
-            src={zoomedImage.src}
-            alt={zoomedImage.alt}
-            className="zoom-image"
-            onClick={(e) => e.stopPropagation()}
-          />
+        <div className="zoom-overlay" onClick={closeZoom}>
+          <button className="zoom-close" onClick={closeZoom} aria-label="Close">✕</button>
+
+          <div className="zoom-controls" onClick={(e) => e.stopPropagation()}>
+            <button onClick={zoomOut} disabled={scale <= 1} aria-label="Zoom out">−</button>
+            <span className="zoom-level">{Math.round(scale * 100)}%</span>
+            <button onClick={zoomIn} disabled={scale >= 3} aria-label="Zoom in">+</button>
+          </div>
+
+          <div className="zoom-image-wrapper">
+            <img
+              src={zoomedImage.src}
+              alt={zoomedImage.alt}
+              className="zoom-image"
+              style={{ transform: `scale(${scale})` }}
+              onClick={handleImageClick}
+            />
+          </div>
         </div>
       )}
 
