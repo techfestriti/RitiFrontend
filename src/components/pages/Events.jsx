@@ -38,7 +38,7 @@ const Events = () => {
 
   const handleDownload = (type) => {
     const pdfFiles = {
-      Brochure: 'RITI BROCHURE.pdf',
+      Brochure: 'Riti 11.0 Full Brochure.pdf',
       Notice: 'events_landing.pdf'
     };
     const link = document.createElement('a');
