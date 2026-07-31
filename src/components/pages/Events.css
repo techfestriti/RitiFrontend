@@ -28,7 +28,7 @@
   width: 100%;
   margin-bottom: 2rem;
 }
-.brochure-item {
+/*.brochure-item {
   cursor: pointer;
   position: relative;
   flex: 0 1 calc(33.333% - 1rem);
@@ -40,7 +40,19 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease;
 }
-
+*/
+.brochure-item {
+  cursor: pointer;
+  position: relative;
+  flex: 0 1 calc(33.333% - 1rem);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
 
 @media (max-width: 900px) {
   .brochure-item { flex: 0 1 calc(50% - 1rem); }
