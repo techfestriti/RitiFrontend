@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AboutUs.css';
-import aboutImage1 from '/Hero.png'; 
-import aboutImage2 from '/Hero.png';
+import aboutImage1 from '/128854.jpg'; 
+import aboutImage2 from '/128854.jpg';
 
 const AboutSection = () => {
   const [isFlipped, setIsFlipped] = useState(false);
