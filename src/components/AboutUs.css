@@ -69,7 +69,7 @@
 .image-flip-container {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 550px;   /* increased from 400px */
   perspective: 1000px;
 }
 
@@ -118,9 +118,9 @@
   .about-content {
     grid-template-columns: 1fr;
   }
-  
+
   .image-flip-container {
-    height: 350px;
+    height: 450px;   /* increased from 350px */
     order: -1;
     margin-bottom: 2rem;
   }
@@ -132,11 +132,11 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .title-number {
     font-size: 2.5rem;
   }
-  
+
   .glass-card {
     padding: 1.5rem;
   }
