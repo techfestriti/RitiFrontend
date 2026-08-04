@@ -87,6 +87,25 @@ const Admin = () => {
     }
   };
 
+  const deleteRegistration = async (id, name) => {
+    if (!window.confirm(`Delete registration for "${name}"? This cannot be undone.`)) return;
+
+    try {
+      await axios.delete(`${API_URL}/api/admin/registrations/${id}`, axiosConfig);
+      const update = (list) => list.filter(r => r._id !== id);
+      setFiltered(update);
+      setRegistrations(update);
+    } catch (err) {
+      console.error('Error deleting registration:', err);
+      if (err.response?.status === 401) {
+        handleLogout();
+        setError('Session expired. Please log in again.');
+      } else {
+        alert(err.response?.data?.error || 'Failed to delete registration.');
+      }
+    }
+  };
+
   if (!token) {
     return <AdminLogin onLoginSuccess={handleLoginSuccess} />;
   }
@@ -158,11 +177,12 @@ const Admin = () => {
                 <th>Course</th>
                 <th>Semester</th>
                 <th>Events (per-event attendance &amp; payment)</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <tr><td colSpan="7" className="admin-empty">No participants found.</td></tr>
+                <tr><td colSpan="8" className="admin-empty">No participants found.</td></tr>
               ) : (
                 filtered.map(participant => (
                   <tr key={participant._id}>
@@ -214,6 +234,14 @@ const Admin = () => {
                           );
                         })}
                       </div>
+                    </td>
+                    <td data-label="Actions">
+                      <button
+                        className="admin-action-button admin-delete-button"
+                        onClick={() => deleteRegistration(participant._id, participant.name)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))
